@@ -7,10 +7,10 @@ from apikeys import SERVER_ID, BOT_CHANNEL_ID
 
 
 async def setup(client):
-    await client.add_cog(VillageManager(client), guild=discord.Object(id=SERVER_ID))
+    await client.add_cog(IslandManager(client), guild=discord.Object(id=SERVER_ID))
 
 
-class VillageManager(commands.Cog):
+class IslandManager(commands.Cog):
     def __init__(self, client):
         self.client = client
 
@@ -23,7 +23,7 @@ class VillageManager(commands.Cog):
 
     # Main Command
 
-    @ app_commands.command(name="village", description="Manage your village!")
+    @ app_commands.command(name="village", description="Manage your island!")
     @ app_commands.rename(arg1="1", arg2="2")
     @ app_commands.describe(arg1='First argument', arg2='Second argument')
     async def villageCommand(self, interaction: discord.Interaction, arg1: str, arg2: str):

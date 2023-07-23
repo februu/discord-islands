@@ -1,4 +1,4 @@
-### Cog with infinite loop that executes every x seconds template
+### Cog with infinite loop that executes every x seconds (template)
 
 ```python
 
