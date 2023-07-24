@@ -7,4 +7,4 @@ Box specifications:
 	each lateral face is 8p width x 10p height
 ```
 
-Credits for the artwork goes to **Dani Maccari**. [Dani's Itch.io Profile](https://dani-maccari.itch.io/tiny-blocks-isometric-pixel-assets).
+Credits for the artwork goes to **Dani Maccari**. [Dani's Itch.io Profile](https://dani-maccari.itch.io/tiny-blocks-isometric-pixel-assets)

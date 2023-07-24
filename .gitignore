@@ -152,3 +152,4 @@ cython_debug/
 #.idea/
 
 apikeys.py
+image.png
