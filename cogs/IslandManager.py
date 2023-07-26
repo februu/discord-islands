@@ -21,7 +21,82 @@ class IslandManager(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    # Functions
+    # -----------------------------------------
+    #               Commands
+    # -----------------------------------------
+
+    # /island
+    # - sends picture of your island and info about collected resources.
+    @ app_commands.command(name="island", description="Collect resources from your island!")
+    async def islandCommand(self, interaction: discord.Interaction):
+
+        if not interaction.channel.id == CHANNEL_ID:
+            await interaction.response.send_message(f"❌ You can only use that command in <#{CHANNEL_ID}>", ephemeral=True)
+            return
+
+        await interaction.response.defer()
+        await self.generateIslandImage(interaction.user.id)
+        if (os.path.exists(f"{interaction.user.id}.png")):
+            await interaction.followup.send(file=discord.File(f"{interaction.user.id}.png"))
+            os.remove(f"{interaction.user.id}.png")
+        else:
+            await interaction.followup.send("Error! Please contact the admin.")
+
+    # /upgrade
+    # - allows you to upgrade your island.
+    # @arg1 - upgrade that user want to buy.
+    @ app_commands.command(name="upgrade", description="Upgrade your island!")
+    async def upgradeCommand(self, interaction: discord.Interaction, arg1: str):
+
+        if not interaction.channel.id == CHANNEL_ID:
+            await interaction.response.send_message(f"❌ You can only use that command in <#{CHANNEL_ID}>", ephemeral=True)
+            return
+
+        await interaction.response.defer()
+
+        # TODO: Database request and logic here.
+
+        await interaction.followup.send("Upgraded!")
+
+    # /craft
+    # - allows you to craft items.
+    # @arg1 - item that user want to craft.
+    @ app_commands.command(name="craft", description="Craft items using your resources!")
+    async def craftCommand(self, interaction: discord.Interaction, arg1: str):
+
+        if not interaction.channel.id == CHANNEL_ID:
+            await interaction.response.send_message(f"❌ You can only use that command in <#{CHANNEL_ID}>", ephemeral=True)
+            return
+
+        await interaction.response.defer()
+
+        # TODO: Database request and logic here.
+
+        await interaction.followup.send("Started crafting!")
+
+    # /sell
+    # - allows you to sell items.
+    # @arg1 - items that user want to sell. If 'all', sell all of them.
+    @ app_commands.command(name="sell", description="Sell resources for money!")
+    async def sellCommand(self, interaction: discord.Interaction, arg1: str):
+
+        if not interaction.channel.id == CHANNEL_ID:
+            await interaction.response.send_message(f"❌ You can only use that command in <#{CHANNEL_ID}>", ephemeral=True)
+            return
+
+        await interaction.response.defer()
+
+        # TODO: Database request and logic here.
+
+        await interaction.followup.send("Sold!")
+
+    # -----------------------------------------
+    #               Functions
+    # -----------------------------------------
+
+    # generateIslandImage(userId)
+    # @userId - discord user ID
+    # Generates picture of user's island and saves it as <userid>.png
 
     async def generateIslandImage(self, userId):
         bg = Image.open("assets/bg.png")
@@ -41,19 +116,6 @@ class IslandManager(commands.Cog):
                                'quickerCrafting': 3},
                   'items': [{'id': 0,
                              'amount': 1}]}
-
-        # Populates with blocks.
-        for i in range(20):
-            y = random.randint(0, len(island['map']) - 1)
-            x = random.randint(0, len(island['map'][0]) - 1)
-            z = random.randint(0, len(island['map'][0][0]) - 1)
-            while not island['map'][y][z][x] == -1 or y > 0:
-                if island['map'][y-1][z][x] != -1:
-                    break
-                y = random.randint(0, len(island['map']) - 1)
-                x = random.randint(0, len(island['map'][0]) - 1)
-                z = random.randint(0, len(island['map'][0][0]) - 1)
-            island['map'][y][z][x] = random.choice(list(BLOCKS.values()))
 
         # Draws the base.
         for z in range(0, len(island['map'][0])):
@@ -85,20 +147,3 @@ class IslandManager(commands.Cog):
 
         bg = bg.resize((128*4, 128*4), resample=Image.Resampling.NEAREST)
         bg.save(f"{userId}.png", "PNG")
-
-    # Main Command
-
-    @ app_commands.command(name="island", description="Collect resources from your island!")
-    async def islandCommand(self, interaction: discord.Interaction):
-
-        if not interaction.channel.id == CHANNEL_ID:
-            await interaction.response.send_message(f"❌ You can only use that command in <#{CHANNEL_ID}>", ephemeral=True)
-            return
-
-        await interaction.response.defer()
-        await self.generateIslandImage(interaction.user.id)
-        if (os.path.exists(f"{interaction.user.id}.png")):
-            await interaction.followup.send(file=discord.File(f"{interaction.user.id}.png"))
-            os.remove(f"{interaction.user.id}.png")
-        else:
-            await interaction.followup.send("Error! Please contact the admin.")
