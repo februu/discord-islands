@@ -3,7 +3,7 @@ from discord.ext import commands
 from discord import app_commands
 import asyncio
 
-from apikeys import SERVER_ID, BOT_CHANNEL_ID
+from apikeys import SERVER_ID, CHANNEL_ID
 
 
 async def setup(client):
@@ -23,13 +23,13 @@ class IslandManager(commands.Cog):
 
     # Main Command
 
-    @ app_commands.command(name="village", description="Manage your island!")
+    @ app_commands.command(name="island", description="Manage your island!")
     @ app_commands.rename(arg1="1", arg2="2")
     @ app_commands.describe(arg1='First argument', arg2='Second argument')
-    async def villageCommand(self, interaction: discord.Interaction, arg1: str, arg2: str):
+    async def islandCommand(self, interaction: discord.Interaction, arg1: str, arg2: str):
 
-        if not interaction.channel.id == BOT_CHANNEL_ID:
-            await interaction.response.send_message(f"❌ You can only use that command in <#{BOT_CHANNEL_ID}>", ephemeral=True)
+        if not interaction.channel.id == CHANNEL_ID:
+            await interaction.response.send_message(f"❌ You can only use that command in <#{CHANNEL_ID}>", ephemeral=True)
             return
 
         arg1 = arg1.lower()

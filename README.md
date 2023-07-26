@@ -7,7 +7,6 @@ Discord bot that allows you to play a simple island resource management game. _C
 ```python
 DISCORD_TOKEN = ""
 SERVER_ID =
-BOT_CHANNEL_ID =
-MEME_CHANNEL_ID =
+CHANNEL_ID =
 ADMIN_ID =
 ```

@@ -2,23 +2,27 @@ from PIL import Image
 import random
 import time
 
+from settings import TILE_WIDTH, TILE_HEIGHT, ISO_TILE_HEIGHT, BLOCKS
 
-MAP_Y = 5
-TILE_WIDTH = 16
-TILE_HEIGHT = 18
-ISO_TILE_HEIGHT = 8
-
+# Example island object.
 island = {'id': 175652881456693249,
           'lastCollectedTimestamp': 1690361813,
           'balance': 0,
-          'map': [[[-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]], [[-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]], [[-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]]],
-          'upgrades': [],
-          'items': [{'id': 0, 'amount': 1}]}
+          'map': [[[-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]],
+                  [[-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]], [[-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]]],
+          'upgrades': {'size': 4,
+                       'blockGeneration': 1,
+                       'higherValue': 2,
+                       'quickerGeneration': 3,
+                       'moreResources': 3,
+                       'quickerCrafting': 3},
+          'items': [{'id': 0,
+                     'amount': 1}]}
 
 sprites = Image.open("assets/tinyBlocks.png")
 bg = Image.open("assets/bg.png")
 
-# Populate with ores.
+# Populates with blocks.
 for i in range(20):
     y = random.randint(0, len(island['map']) - 1)
     x = random.randint(0, len(island['map'][0]) - 1)
@@ -29,9 +33,10 @@ for i in range(20):
         y = random.randint(0, len(island['map']) - 1)
         x = random.randint(0, len(island['map'][0]) - 1)
         z = random.randint(0, len(island['map'][0][0]) - 1)
-    island['map'][y][z][x] = random.randint(49, 53)
+    island['map'][y][z][x] = random.choice(list(BLOCKS.values()))
 
-# print(int(time.time()))
+#  Gets timestamp in seconds.
+#  print(int(time.time()))
 
 # Draws the base.
 for z in range(0, len(island['map'][0])):
