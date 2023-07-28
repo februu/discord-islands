@@ -7,7 +7,7 @@ from apikeys import DISCORD_TOKEN, SERVER_ID
 
 intents = discord.Intents().all()
 client = commands.Bot("/", activity=discord.Activity(
-    type=discord.ActivityType.playing, name="/village 🌳"), intents=intents)
+    type=discord.ActivityType.playing, name="/island 🌳"), intents=intents)
 
 
 @client.event

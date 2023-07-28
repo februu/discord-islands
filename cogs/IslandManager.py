@@ -44,12 +44,18 @@ class IslandManager(commands.Cog):
             return
 
         await interaction.response.defer()
-        await self.generateIslandImage(interaction.user.id)
-        if (os.path.exists(f"{interaction.user.id}.png")):
-            await interaction.followup.send(file=discord.File(f"{interaction.user.id}.png"), view=IslandView())
-            os.remove(f"{interaction.user.id}.png")
+        userId = interaction.user.id
+        await self.generateIslandImage(userId)
+        if (os.path.exists(f"{userId}.png")):
+            embed = discord.Embed(title=f"**⭐ {interaction.user.display_name}'s Island ⭐**", description=f"Balance: *$100*\nWarehouse:",
+                                  colour=0x33a031)
+            embed.set_image(url=f"attachment://{userId}.png")
+            embed.set_footer(
+                text="Discord Islands - Developed  by febru | Graphics by Dani Maccari ❤", icon_url="https://media.discordapp.net/attachments/1080031708092583957/1134489987744804985/icon.png")
+            await interaction.followup.send(f"<@{userId}>", file=discord.File(f"{userId}.png"), embed=embed, view=IslandView())
+            os.remove(f"{userId}.png")
         else:
-            await interaction.followup.send("Error! Please contact the admin.")
+            await interaction.followup.send(f"<@{userId}> Error! Please contact the admin.", ephemeral=True)
 
     # -----------------------------------------
     #               Functions
@@ -155,7 +161,7 @@ class IslandView(discord.ui.View):
         await interaction.followup.send("Crafted!", ephemeral=True)
 
     # sellAllButton
-    @discord.ui.button(label="Sell All", style=discord.ButtonStyle.red)
+    @discord.ui.button(label="💰 Sell All", style=discord.ButtonStyle.red)
     async def sellAllButton(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer()
         await self.collectResources(interaction.user.id)
