@@ -12,7 +12,7 @@ client = commands.Bot("/", activity=discord.Activity(
 
 @client.event
 async def on_ready():
-    print(f"Connected to {client.user.name} (#{client.user.id}).")
+    print(f"> Connected to {client.user.name} (#{client.user.id}).")
 
 
 @client.event

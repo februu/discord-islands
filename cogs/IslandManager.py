@@ -21,7 +21,7 @@ async def setup(client):
 class IslandManager(commands.Cog):
     def __init__(self, client):
         self.client = client
-        print("Attempting connection to MongoDB...")
+        print("> Attempting connection to MongoDB...")
         try:
             cluster = MongoClient(MONGODB_CONNECTION_STRING)
             self.db = cluster['islands']['islands']
@@ -112,7 +112,9 @@ class IslandManager(commands.Cog):
             # Gets user island from database.
             island = self.db.find_one({"id": int(userId)})
             if island == None:
-                print("> This user does not have an island!")
+                print(f"> User #{userId} does not have an island.")
+                await self.createNewIsland(userId)
+                island = self.db.find_one({"id": int(userId)})
 
             # Draws the base.
             bg = Image.open("assets/bg.png")
@@ -149,3 +151,22 @@ class IslandManager(commands.Cog):
 
         except:
             return
+
+    # createNewIsland(userId)
+    # @userId - discord user ID
+    # Creates new island in database
+    async def createNewIsland(self, userId):
+        island = {'id': userId,
+                  'lastCollectedTimestamp': int(time.time()),
+                  'balance': 0,
+                  'map': [[[-1, -1, -1], [-1, -1, -1], [-1, -1, -1]],
+                          [[-1, -1, -1], [-1, -1, -1], [-1, -1, -1]], [[-1, -1, -1], [-1, -1, -1], [-1, -1, -1]]],
+                  'upgrades': {'size': 1,
+                               'blockGeneration': 1,
+                               'higherValue': 1,
+                               'quickerGeneration': 1,
+                               'moreResources': 1,
+                               'quickerCrafting': 1},
+                  'items': []}
+        self.db.insert_one(island)
+        print(f"> New island created for user #{userId}")
